@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name" translatable="false">ControllMoney</string>
+    <string name="Enter">Enter</string>
+    <string name="Registration">Registration</string>
+    <string name="Enter_password">Enter password</string>
+    <string name="Enter_email">Enter email</string>
+    <string name="Enter_or_reg">Enter or registrate</string>
+    <string name="Hello">Nice to see you</string>
+    <string name="greeting">Make plans of your life</string>
+    <string name="Start">Start</string>
+    <string name="database">DataBase</string>
+</resources>

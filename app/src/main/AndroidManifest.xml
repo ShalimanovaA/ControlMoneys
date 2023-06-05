@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:versionName="1.0"
+    android:versionCode="1">
+    <uses-sdk android:minSdkVersion="22" android:targetSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <supports-screens
+        android:largeScreens="false"
+        android:normalScreens="true"
+        android:smallScreens="false"
+        android:xlargeScreens="false" />
+
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ControlMoneys"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.Reg" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.Form" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.ReadBd" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.Reg_Auth" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.MainMenu" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.Calender"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.Family" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.Account" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.ChangeAccountData" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.PersonSpending" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.Plan" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.example.controlmoneys.Sms" />
+    </application>
+
+</manifest>

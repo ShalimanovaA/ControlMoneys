@@ -1,0 +1,67 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    tools:visibility="visible">
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/back_main"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+         />
+    <TextView
+        android:id="@+id/hello"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/Hello"
+        android:textColor="@color/purple"
+        android:textSize="40sp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2">
+
+    </TextView>
+    <LinearLayout
+        android:id="@+id/grad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:background="@drawable/style_main"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/plan_life"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="20dp"
+            android:padding="70dp"
+            android:gravity="center"
+            android:text="@string/greeting"
+            android:textColor="@color/white"
+            android:textSize="40sp">
+
+        </TextView>
+        <TextView
+            android:id="@+id/start"
+            android:layout_width="150sp"
+            android:layout_height="60sp"
+            android:layout_below="@+id/plan_life"
+            android:layout_margin="20dp"
+            android:background="@drawable/style_background"
+            android:gravity="center"
+            android:onClick="onClickStart"
+            android:text="@string/Start"
+            android:textColor="@color/purple"
+            android:textSize="30sp"
+            android:layout_gravity="left">
+        </TextView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

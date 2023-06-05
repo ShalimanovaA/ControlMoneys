@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "572323230519",
+    "firebase_url": "https://controlmoneys-default-rtdb.firebaseio.com",
+    "project_id": "controlmoneys",
+    "storage_bucket": "controlmoneys.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572323230519:android:69c4a355bb3f84e0e160b2",
+        "android_client_info": {
+          "package_name": "com.example.controlmoneys"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAnbIRYcJVEPRb0xQyHSNuNXxLSWmZVWQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
