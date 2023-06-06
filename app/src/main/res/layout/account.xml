@@ -43,7 +43,7 @@
                         android:id="@+id/textView1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Имя: "
+                        android:text="@string/Name"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -53,7 +53,7 @@
                         android:id="@+id/textView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Почта: "
+                        android:text="@string/Email"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -61,7 +61,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Счёт: "
+                        android:text="@string/Acct"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -70,7 +70,7 @@
                         android:id="@+id/textView4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Семья: "
+                        android:text="@string/Family"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -78,14 +78,10 @@
                         android:id="@+id/textView5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Накопления: "
+                        android:text="@string/Accumulations"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
-
-
-
-
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

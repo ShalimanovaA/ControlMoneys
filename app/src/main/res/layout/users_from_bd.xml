@@ -7,7 +7,7 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="При технических трудностях обращаться к:"
+            android:text="@string/tech_dif"
             android:gravity="center"
             android:textSize="30sp"
             android:textColor="@color/purple"

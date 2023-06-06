@@ -38,7 +38,7 @@
                         android:id="@+id/textViewHis1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Введите имя:"
+                        android:text="@string/Enter_name"
                         android:padding="10dp"
                         android:textSize="20sp" />
 
@@ -46,7 +46,7 @@
                         android:id="@+id/editTextName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Имя"
+                        android:hint="@string/Name"
                         android:ems="10"
                         android:inputType="textPersonName" />
 

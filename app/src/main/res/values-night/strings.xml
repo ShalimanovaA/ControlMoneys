@@ -1,19 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">ControllMoney</string>
-    <string name="Enter">Вход</string>
-    <string name="Registration">Регистрация</string>
-    <string name="Enter_password">Введите пароль</string>
-    <string name="Enter_email">Введите email</string>
-    <string name="Enter_or_reg">Войдите или зарегистрируйтесь</string>
-    <string name="Hello">Добро пожаловать!</string>
-    <string name="greeting">Планируй свою жизнь</string>
-    <string name="Start">Начать</string>
-    <string name="database">DataBase</string>
-    <string name="Name">Имя</string>
-    <string name="Email">Почта</string>
-    <string name="Acct">Счёт</string>
-    <string name="Family">Семья</string>
-    <string name="Accumulations">Накопления</string>
+    <string name="Name">Name:</string>
+    <string name="Email">Email:</string>
+    <string name="Acct">Счёт:</string>
+    <string name="Family">Семья:</string>
+    <string name="Accumulations">Накопления:</string>
     <string name="Buy">Покупка</string>
     <string name="Salary">Зарплата</string>
     <string name="Done">Готово</string>

@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="26sp"
                     android:gravity="center"
-                    android:text="Покупка"
+                    android:text="@string/Buy"
                     android:drawableLeft="@drawable/baseline_add_circle_outline_24"
                     android:layout_weight="1"/>
 
@@ -54,7 +54,7 @@
                     android:textSize="26sp"
                     android:padding="5dp"
                     android:gravity="center"
-                    android:text="Зарплата"
+                    android:text="@string/Salary"
                     android:drawableLeft="@drawable/baseline_add_circle_outline_24"
                     android:layout_weight="1"/>
             </LinearLayout>
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Категория"
+                android:hint="@string/Category"
                 android:inputType="textMultiLine"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center"/>
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Сумма"
+                android:hint="@string/Sum"
                 android:inputType="numberDecimal"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center"/>
@@ -105,7 +105,7 @@
                     android:background="@drawable/shadow"
                     android:textSize="20sp"
                     android:layout_weight="1"
-                    android:text="Готово" />
+                    android:text="@string/Done" />
                 <TextView
                     android:id="@+id/dateTextView5"
                     android:onClick="onClick"
@@ -115,7 +115,7 @@
                     android:background="@drawable/shadow"
                     android:textSize="20sp"
                     android:layout_weight="1"
-                    android:text="Посмотреть" />
+                    android:text="@string/See" />
             </LinearLayout>
             <TextView
                 android:id="@+id/dateTextViewDB"
@@ -135,7 +135,7 @@
                 android:background="@drawable/shadow"
                 android:textSize="20sp"
                 android:layout_gravity="center"
-                android:text="Удалить" />
+                android:text="@string/Delete" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

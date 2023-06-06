@@ -12,7 +12,7 @@
         android:gravity="center"
         android:textSize="40sp"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Добро пожаловать!"
+        android:text="@string/Hello"
         android:paddingTop="20sp"
         />
     <TextView
@@ -24,7 +24,7 @@
         android:gravity="center"
         android:textSize="20sp"
         android:layout_margin="20dp"
-        android:text="Почта"
+        android:text="@string/Email"
         app:layout_constraintTop_toBottomOf="@+id/textViewHello"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -66,7 +66,7 @@
                             android:background="@drawable/style_background"
                             android:drawableLeft="@drawable/baseline_account_box_24"
                             android:gravity="center"
-                            android:text="Аккаунт"
+                            android:text="@string/Account"
                             android:textAlignment="center"
                             android:textSize="20sp"
                             android:layout_weight="1"
@@ -79,7 +79,7 @@
                             android:background="@drawable/style_background"
                             android:drawableLeft="@drawable/baseline_edit_note_24"
                             android:gravity="center"
-                            android:text="План"
+                            android:text="@string/Plan"
                             android:textSize="20sp"
                             android:layout_weight="1"
                             android:onClick="onClick"/>
@@ -91,7 +91,7 @@
                             android:background="@drawable/style_background"
                             android:drawableLeft="@drawable/baseline_family_restroom_24"
                             android:gravity="center"
-                            android:text="Семья"
+                            android:text="@string/Family"
                             android:textAlignment="center"
                             android:textSize="20sp"
                             android:layout_weight="1"
@@ -117,7 +117,7 @@
                             android:background="@drawable/style_background"
                             android:drawableLeft="@drawable/baseline_calendar_month_24"
                             android:gravity="center"
-                            android:text="Календарь"
+                            android:text="@string/Calendar"
                             android:textSize="20sp"
                             android:layout_weight="1"
                             android:onClick="onClick"/>
@@ -130,7 +130,7 @@
                             android:background="@drawable/style_background"
                             android:drawableLeft="@drawable/baseline_attach_money_24"
                             android:layout_weight="1"                            android:gravity="center"
-                            android:text="Накопления"
+                            android:text="@string/Accumulations"
                             android:textAlignment="center"
                             android:textSize="20sp"
                             android:onClick="onClick"/>
@@ -150,7 +150,7 @@
                             android:layout_height="120dp"
                             android:background="@drawable/style_background"
                             android:drawableLeft="@drawable/baseline_history_24"
-                            android:text="История"
+                            android:text="@string/History"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:layout_marginLeft="30dp"
@@ -166,7 +166,7 @@
                             android:layout_marginRight="30dp"
                             android:background="@drawable/style_background"
                             android:drawableLeft="@drawable/baseline_message_24"
-                            android:text="Смс"
+                            android:text="@string/Sms"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:textAlignment="center"
@@ -209,14 +209,14 @@
                         android:id="@+id/textViewAc1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="При снятии деньги будут прибавлены к общему счету. "
+                        android:text="@string/explain_accum"
                         android:padding="10dp"
                         android:textSize="20sp" />
                     <TextView
                         android:id="@+id/textViewAc2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Накопления: "
+                        android:text="@string/Accumulations"
                         android:padding="10dp"
                         android:textSize="20sp" />
                     <EditText
@@ -225,7 +225,7 @@
                         android:layout_height="wrap_content"
                         android:autofillHints=""
                         android:ems="10"
-                        android:hint="Накопления"
+                        android:hint="@string/Accumulations"
                         android:inputType="numberDecimal"
                         android:minHeight="48dp" />
                     <LinearLayout
@@ -310,7 +310,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="70dp"
                         android:gravity="center"
-                        android:text="Назад"
+                        android:text="@string/Back"
                         android:layout_marginBottom="10dp"
                         android:textSize="20sp"
                         android:layout_marginLeft="100dp"
