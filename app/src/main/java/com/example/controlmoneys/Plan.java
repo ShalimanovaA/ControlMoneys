@@ -5,24 +5,43 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 
 public class Plan extends AppCompatActivity {
     TextView txt;
     String text;
-    SharedPreferences sPref; public String prefName = "UserData";
+    SharedPreferences sPref; public String prefName = "",curName="UserData";
     SpendHelper spendHelper; DBHelper dbHelper;
+    private DatabaseReference mDataBase;private String USER_KEY = "User";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.plan);
         setTitle("План");
+
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
+        prefName = sPref.getString("EMAIL","");
+        sPref = getSharedPreferences(prefName, MODE_PRIVATE);
+
+        mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
+        getDataFromDb();
+
 
         txt = findViewById(R.id.textView1);
         LocalDate currentDate;
@@ -36,13 +55,44 @@ public class Plan extends AppCompatActivity {
         }
         plan();
     }
+    // загрузить данные из бд
+
+    private void getDataFromDb() {
+        ValueEventListener vListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // достаем из snapshot все данные
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    UserAccount user = ds.getValue(UserAccount.class);
+                    if (user != null){
+                        if (user.email.equals(sPref.getString("EMAIL",""))) {
+                            SharedPreferences.Editor ed = sPref.edit();
+                            ed.putInt("PLAN", user.period);
+                            ed.putInt("ZP", user.money);
+                            ed.apply();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(), "Произошла ошибка", Toast.LENGTH_SHORT).show();
+            }
+        };
+        mDataBase.addValueEventListener(vListener);
+    }
+
+    //составить план
     private void plan(){
 
             LocalDate currentDate;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 currentDate = LocalDate.now();
                 int curMonth = currentDate.getMonth().getValue();
-                if(sPref.getInt("PLAN", 0)==1) {
+                if(sPref.getInt("PLAN", 1)==1) {
 
                     if (curMonth == 12) {
                         int curYear = currentDate.getYear() +1;
@@ -71,6 +121,7 @@ public class Plan extends AppCompatActivity {
                 }
             }
     }
+    //подсчёты для плана
     private void loadData(LocalDate first,LocalDate last){
         // сколько дней в периоде
         int count_days = Integer.parseInt(first.toString().split("-")[2]) +
@@ -130,6 +181,7 @@ public class Plan extends AppCompatActivity {
             text+="\n";
             txt.setText(text);
     }
+    //проверка равернства месяцев
     private boolean checkMonth(LocalDate data, String s){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return data.getMonth().getValue() == Integer.parseInt(s.split("-")[1]);

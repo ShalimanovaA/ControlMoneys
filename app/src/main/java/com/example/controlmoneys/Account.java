@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Account extends AppCompatActivity {
     TextView name,mail,acct,family,accumulation;
-    SharedPreferences sPref; public String prefName = "UserData";
+    SharedPreferences sPref; public String prefName = "", curName="UserData";
 
 
     @Override
@@ -25,6 +26,9 @@ public class Account extends AppCompatActivity {
         acct = findViewById(R.id.textView3);
         family = findViewById(R.id.textView4);
         accumulation = findViewById(R.id.textView5);
+
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
+        prefName = sPref.getString("EMAIL","");
     }
 
     @Override

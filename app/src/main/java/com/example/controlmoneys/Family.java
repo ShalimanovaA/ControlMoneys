@@ -31,13 +31,16 @@ public class Family extends AppCompatActivity {
     ArrayList<String> familyArray;
     EditText editText;
     ArrayAdapter<String> adapter;
-    SharedPreferences sPref; public String prefName = "UserData";
+    SharedPreferences sPref; public String prefName = "",curName="UserData" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.family_lay);
         setTitle("Ежемесячные траты");
+
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
+        prefName = sPref.getString("EMAIL","");
 
         // получаем экземпляр элемента ListView edittext
         ListView listView = findViewById(R.id.FamilyList);

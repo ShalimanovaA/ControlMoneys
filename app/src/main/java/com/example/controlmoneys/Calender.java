@@ -22,12 +22,16 @@ public class Calender extends AppCompatActivity implements View.OnClickListener{
     public EditText category, sum;
     public DatePicker datePicker;
     DBHelper dbHelper;SharedPreferences sPref;
-    public String prefName = "UserData";
+    public String prefName = "",curName="UserData";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_lay);
+
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
+        prefName = sPref.getString("EMAIL","");
+        sPref = getSharedPreferences(prefName, MODE_PRIVATE);
 
         by = findViewById(R.id.dateTextView2);
         get = findViewById(R.id.dateTextView3);
@@ -71,6 +75,7 @@ public class Calender extends AppCompatActivity implements View.OnClickListener{
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         Cursor cursor = database.query(DBHelper.TABLE_CONTACTS,null, null,null,null,null,null);
+        int nameIndex = cursor.getColumnIndex(DBHelper.KEY_NAME);
         int dataIndex = cursor.getColumnIndex(DBHelper.KEY_DATA);
         int catIndex = cursor.getColumnIndex(DBHelper.KEY_CATEGORY);
         int kindIndex = cursor.getColumnIndex(DBHelper.KEY_KIND);
@@ -78,12 +83,14 @@ public class Calender extends AppCompatActivity implements View.OnClickListener{
             switch (view.getId()){
                 case R.id.dateTextView2:
                     if(!sum.getText().toString().equals("") && !category.getText().toString().equals("")) {
+                        sPref = getSharedPreferences(prefName, MODE_PRIVATE);
+                        contentValues.put(DBHelper.KEY_NAME,sPref.getString("EMAIL",""));
                         contentValues.put(DBHelper.KEY_DATA, CurData);
                         contentValues.put(DBHelper.KEY_CATEGORY, category.getText().toString());
                         contentValues.put(DBHelper.KEY_SUM, Integer.parseInt(sum.getText().toString()));
                         contentValues.put(DBHelper.KEY_KIND, "Покупка");
                         database.insert(DBHelper.TABLE_CONTACTS, null, contentValues);
-                        sPref = getSharedPreferences(prefName, MODE_PRIVATE);
+
                         // объект editot
                         SharedPreferences.Editor ed = sPref.edit();
                         int n = sPref.getInt("ACCT",0)-Integer.parseInt(sum.getText().toString());
@@ -104,6 +111,7 @@ public class Calender extends AppCompatActivity implements View.OnClickListener{
                         contentValues.put(DBHelper.KEY_SUM, Integer.parseInt(sum.getText().toString()));
                         contentValues.put(DBHelper.KEY_KIND, "Зарплата");
                         sPref = getSharedPreferences(prefName, MODE_PRIVATE);
+                        contentValues.put(DBHelper.KEY_NAME,sPref.getString("EMAIL",""));
                         // объект editot
                         SharedPreferences.Editor ed = sPref.edit();
                         int n = sPref.getInt("ACCT",0)+Integer.parseInt(sum.getText().toString());
@@ -124,12 +132,13 @@ public class Calender extends AppCompatActivity implements View.OnClickListener{
                     catIndex = cursor.getColumnIndex(DBHelper.KEY_CATEGORY);
                     kindIndex = cursor.getColumnIndex(DBHelper.KEY_KIND);
                     sumIndex = cursor.getColumnIndex(DBHelper.KEY_SUM);
+                    nameIndex = cursor.getColumnIndex(DBHelper.KEY_NAME);
                     db.setVisibility(View.VISIBLE);
                     String text = "";
                     int sum_day=0; int i =1;
                     if (cursor.moveToFirst()){
                         do{
-                            if(cursor.getString(dataIndex).equals(CurData)){
+                            if(cursor.getString(dataIndex).equals(CurData) && cursor.getString(nameIndex).equals(sPref.getString("EMAIL",""))){
                                 text += Integer.toString(i) +")" + cursor.getString(dataIndex) + cursor.getString(kindIndex) +
                                         ":"+cursor.getString(catIndex) + " на " +cursor.getInt(sumIndex)+"\n";
                                 i++;
@@ -153,10 +162,11 @@ public class Calender extends AppCompatActivity implements View.OnClickListener{
                     dataIndex = cursor.getColumnIndex(DBHelper.KEY_DATA);
                     kindIndex = cursor.getColumnIndex(DBHelper.KEY_KIND);
                     sumIndex = cursor.getColumnIndex(DBHelper.KEY_SUM);
+                    nameIndex = cursor.getColumnIndex(DBHelper.KEY_NAME);
                     sum_day=0;
                     if (cursor.moveToFirst()){
                         do{
-                            if(cursor.getString(dataIndex).equals(CurData)){
+                            if(cursor.getString(dataIndex).equals(CurData) && cursor.getString(nameIndex).equals(sPref.getString("EMAIL",""))){
                                 if(cursor.getString(kindIndex).equals("Покупка")){
                                     sum_day-=cursor.getInt(sumIndex);
                                 }

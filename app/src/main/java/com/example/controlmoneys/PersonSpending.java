@@ -18,14 +18,18 @@ public class PersonSpending extends AppCompatActivity {
     SpendHelper spendHelper;
     TextView spend;public String name;
     EditText cat_spend,sum_spend;
+    SharedPreferences sPref; public String prefName = "",curName="UserData";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.person_spending);
         Intent intent = getIntent();
-
         name = intent.getStringExtra("name");
         setTitle(name);
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
+        prefName = sPref.getString("EMAIL","");
+        sPref = getSharedPreferences(prefName, MODE_PRIVATE);
         spend =findViewById(R.id.textViewSpendings);
         spendHelper = new SpendHelper(this);
         cat_spend = findViewById(R.id.editTextTextMultiLineCat);
@@ -42,17 +46,16 @@ public class PersonSpending extends AppCompatActivity {
     private void updateData(){
         SQLiteDatabase database = spendHelper.getWritableDatabase();
         //database.delete(SpendHelper.TABLE_CONTACTS, null,null);
-
-
         Cursor cursor = database.query(SpendHelper.TABLE_CONTACTS,null, null,null,null,null,null);
         int nameIndex = cursor.getColumnIndex(SpendHelper.KEY_NAME);
         int catIndex = cursor.getColumnIndex(SpendHelper.KEY_CATEGORY);
         int sumIndex = cursor.getColumnIndex(SpendHelper.KEY_SUM);
+        int usernameIndex = cursor.getColumnIndex(SpendHelper.KEY_USERNAME);
         String text = "";
         int sum=0; int i =1;
         if (cursor.moveToFirst()){
             do{
-                if(cursor.getString(nameIndex).equals(name)){
+                if(cursor.getString(nameIndex).equals(name) && cursor.getString(usernameIndex).equals(sPref.getString("EMAIL",""))){
                     text += Integer.toString(i) +")" +cursor.getString(catIndex) + ":"  +cursor.getInt(sumIndex)+"\n";
                     i++;
                     sum+=cursor.getInt(sumIndex);
@@ -71,6 +74,7 @@ public class PersonSpending extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.textViewAddSpend:
                 if(!cat_spend.getText().toString().equals("") && !sum_spend.getText().toString().equals("")) {
+                    contentValues.put(SpendHelper.KEY_USERNAME,sPref.getString("EMAIL",""));
                     contentValues.put(SpendHelper.KEY_NAME, name);
                     contentValues.put(SpendHelper.KEY_CATEGORY, cat_spend.getText().toString());
                     contentValues.put(SpendHelper.KEY_SUM, Integer.parseInt(sum_spend.getText().toString()));
@@ -89,7 +93,7 @@ public class PersonSpending extends AppCompatActivity {
             case R.id.textViewSubSpend:
                 if(!cat_spend.getText().toString().equals(""))
                 {
-                database.delete(SpendHelper.TABLE_CONTACTS, SpendHelper.KEY_NAME + " = ? AND "+ SpendHelper.KEY_CATEGORY +" = ?",new String[]{name, cat_spend.getText().toString()});
+                database.delete(SpendHelper.TABLE_CONTACTS, SpendHelper.KEY_NAME + " = ? AND "+ SpendHelper.KEY_CATEGORY +" = ? AND " + SpendHelper.KEY_USERNAME +" = ?",new String[]{name, cat_spend.getText().toString(),sPref.getString("EMAIL","")});
                 Toast.makeText(getApplicationContext(), "Удалены данные для "+ name, Toast.LENGTH_SHORT).show();
                 // обновить данные в поле
                 updateData();

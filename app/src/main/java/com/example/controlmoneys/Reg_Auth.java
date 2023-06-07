@@ -1,7 +1,9 @@
 package com.example.controlmoneys;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,23 +16,32 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class Reg_Auth extends AppCompatActivity {
     EditText email_ed,passwd_ed;
+    // для админа
     private String email_admin = "admin@admin.ru", password_admin = "000000";
     TextView enter, register, tobd;
     // для доступа к бд (ссылка на бд)
     private FirebaseAuth mAuth;public FirebaseUser cUser;
-    SharedPreferences sPref; public String prefName = "UserData";
+    // для SharedPreferences
+    SharedPreferences sPref; public String prefName="", curName="UserData";
+    // для проверки на подключение
+    Context context;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reg);
         sPref = getSharedPreferences(prefName, MODE_PRIVATE);
         init();
+        if(!icConnected()) Toast.makeText(getApplicationContext(), "Пожалуйста, проверьте интернет соединение", Toast.LENGTH_SHORT).show();
     }
 
     // проверка на регистрацию
@@ -72,15 +83,12 @@ public class Reg_Auth extends AppCompatActivity {
     }
     public void reg(View view){
         if(!TextUtils.isEmpty(email_ed.getText().toString()) && !TextUtils.isEmpty(passwd_ed.getText().toString())){
-            if(!sPref.getString("EMAIL","").equals(email_ed.getText().toString()) && !sPref.getString("EMAIL","").equals("")){
-                Toast.makeText(getApplicationContext(), "Вы не имеете права входить", Toast.LENGTH_SHORT).show();
-            }
-            else{
                 mAuth.createUserWithEmailAndPassword(email_ed.getText().toString(), passwd_ed.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = mAuth.getCurrentUser();
+                            prefName = email_ed.getText().toString();
                             saveText(email_ed.getText().toString());
                             Toast.makeText(getApplicationContext(),"Добро пожаловать!",Toast.LENGTH_SHORT).show();
                             //переходим
@@ -96,7 +104,6 @@ public class Reg_Auth extends AppCompatActivity {
                         }
                     }
                 });
-            }
 
         }
         else{
@@ -111,15 +118,13 @@ public class Reg_Auth extends AppCompatActivity {
                 email_ed.setText(""); passwd_ed.setText("");
             }
             else{
-                if(!sPref.getString("EMAIL","").equals(email_ed.getText().toString()) && !sPref.getString("EMAIL","").equals("")){
-                    Toast.makeText(getApplicationContext(), "Вы не имеете права входить", Toast.LENGTH_SHORT).show();
-                }else {
                     try {
                         mAuth.signInWithEmailAndPassword(email_ed.getText().toString(), passwd_ed.getText().toString())
                                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if(task.isSuccessful()){
+                                            prefName = email_ed.getText().toString();
                                             saveText(email_ed.getText().toString());
                                             FirebaseUser user = mAuth.getCurrentUser();
                                             Toast.makeText(getApplicationContext(),"Добро пожаловать!",Toast.LENGTH_SHORT).show();
@@ -138,7 +143,6 @@ public class Reg_Auth extends AppCompatActivity {
                         Toast.makeText(this, "Вы не зарегистрированы", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
-                }
             }
         }
     }
@@ -147,6 +151,7 @@ public class Reg_Auth extends AppCompatActivity {
         Intent intent = new Intent(this, ReadBd.class);
         startActivity(intent);
     }
+    // сохранение почты текущего пользователя
     private void saveText(String text){
         // получаем объект для считывания и записи данных, настройка доступа только этому приложению
         sPref = getSharedPreferences(prefName, MODE_PRIVATE);
@@ -154,6 +159,15 @@ public class Reg_Auth extends AppCompatActivity {
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString("EMAIL", text);
         ed.apply();
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
+        // объект editot
+        ed = sPref.edit();
+        ed.putString("EMAIL", text);
+        ed.apply();
+    }
+    private boolean icConnected(){
+        ConnectivityManager connectivityManager = (ConnectivityManager)getApplicationContext().getSystemService(context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
 }

@@ -11,11 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ChangeAccountData extends AppCompatActivity {
     public EditText name_ch,acct_ch,accumulation_ch;
-    SharedPreferences sPref; public String prefName = "UserData";
+    SharedPreferences sPref; public String prefName = "", curName="UserData";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_account_data);
+
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
+        prefName = sPref.getString("EMAIL","");
+
         name_ch = findViewById(R.id.editTextName);
         acct_ch = findViewById(R.id.editTextNumberDecimal);
         accumulation_ch = findViewById(R.id.editTextNumberDecimal2);

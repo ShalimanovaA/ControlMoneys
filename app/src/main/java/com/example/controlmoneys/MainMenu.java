@@ -23,12 +23,17 @@ public class MainMenu extends AppCompatActivity {
     TextView email, accum_text, his_text;
     EditText accum_num;
     RelativeLayout accum, hist;
-    SharedPreferences sPref; public String prefName = "UserData";
+    SharedPreferences sPref; public String prefName = "",curName="UserData";
     public String user_email; DBHelper dbHelper;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
+        prefName = sPref.getString("EMAIL","");
+        sPref = getSharedPreferences(prefName, MODE_PRIVATE);
+
         email = findViewById(R.id.textViewUser);
         sPref = getSharedPreferences(prefName, MODE_PRIVATE);
         email.setText(sPref.getString("EMAIL",""));
@@ -59,6 +64,7 @@ public class MainMenu extends AppCompatActivity {
             case R.id.log_out:
                 Intent intent_out = new Intent(MainMenu.this, Reg_Auth.class);
                 intent_out.putExtra("log_out", "log_out");
+                intent_out.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent_out);
                 return true;
 
@@ -104,18 +110,21 @@ public class MainMenu extends AppCompatActivity {
                 int catIndex = cursor.getColumnIndex(DBHelper.KEY_CATEGORY);
                 int kindIndex = cursor.getColumnIndex(DBHelper.KEY_KIND);
                 int sumIndex = cursor.getColumnIndex(DBHelper.KEY_SUM);
+                int nameIndex = cursor.getColumnIndex(DBHelper.KEY_NAME);
                 String text = "";
                 int sum_day=0; int i = 1;
                 if (cursor.moveToFirst()){
                     do{
-                            text += Integer.toString(i)+")" + cursor.getString(dataIndex) + cursor.getString(kindIndex) +
-                                    ":"+cursor.getString(catIndex) + " на " +cursor.getInt(sumIndex)+"\n";
-                            i++;
-                            if(cursor.getString(kindIndex).equals("Покупка")){
-                                sum_day-=cursor.getInt(sumIndex);
-                            }
-                            else{
-                                sum_day+=cursor.getInt(sumIndex);
+                            if(cursor.getString(nameIndex).equals(sPref.getString("EMAIL",""))){
+                                text += Integer.toString(i)+")" + cursor.getString(dataIndex) + cursor.getString(kindIndex) +
+                                        ":"+cursor.getString(catIndex) + " на " +cursor.getInt(sumIndex)+"\n";
+                                i++;
+                                if(cursor.getString(kindIndex).equals("Покупка")){
+                                    sum_day-=cursor.getInt(sumIndex);
+                                }
+                                else{
+                                    sum_day+=cursor.getInt(sumIndex);
+                                }
                             }
                     }while(cursor.moveToNext());
                     his_text.setText(text+"\n"+"Итог: "+sum_day);}

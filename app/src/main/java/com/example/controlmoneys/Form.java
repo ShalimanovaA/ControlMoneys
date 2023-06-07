@@ -28,13 +28,17 @@ public class Form extends AppCompatActivity {
     public EditText money_user;
     TextView quest,y,n;
     private DatabaseReference mDataBase;
-    SharedPreferences sPref; public String prefName = "UserData";
+    SharedPreferences sPref; public String prefName = "", curName="UserData";
 
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Аккаунт");
+
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
+        prefName = sPref.getString("EMAIL","");
+
         // анкета при регистрации
         setContentView(R.layout.form);
         //скрыть элемента

@@ -7,13 +7,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class SpendHelper extends SQLiteOpenHelper {
-    public  static final  int DATABASE_VERSION = 1;
+    public  static final  int DATABASE_VERSION = 2;
     public  static final  String DATABASE_NAME = "spendDb";
     public  static final  String TABLE_CONTACTS = "spends";
 
     public  static final  String KEY_ID = "_id";
     public  static final  String KEY_CATEGORY = "category";
     public  static final  String KEY_NAME = "name";
+    public  static final  String KEY_USERNAME = "username";
+
     public  static final  String KEY_SUM = "sum";
 
     // конструктор
@@ -26,7 +28,7 @@ public class SpendHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_CONTACTS + "(" + KEY_ID +
-                " integer primary key," +  KEY_CATEGORY + " text," +
+                " integer primary key," +  KEY_USERNAME + " text,"+  KEY_CATEGORY + " text," +
                 KEY_NAME + " text," +KEY_SUM + " integer" + ")");
     }
     // обновление бд
