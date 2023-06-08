@@ -29,6 +29,7 @@ public class Account extends AppCompatActivity {
 
         sPref = getSharedPreferences(curName, MODE_PRIVATE);
         prefName = sPref.getString("EMAIL","");
+
     }
 
     @Override

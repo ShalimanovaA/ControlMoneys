@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void onClickStart(View view){
         Intent intent = new Intent(MainActivity.this, Reg_Auth.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }

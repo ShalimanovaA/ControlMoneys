@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.ktx.Firebase;
 
 public class Reg_Auth extends AppCompatActivity {
     EditText email_ed,passwd_ed;
@@ -39,30 +40,32 @@ public class Reg_Auth extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reg);
-        sPref = getSharedPreferences(prefName, MODE_PRIVATE);
+        sPref = getSharedPreferences(curName, MODE_PRIVATE);
         init();
         if(!icConnected()) Toast.makeText(getApplicationContext(), "Пожалуйста, проверьте интернет соединение", Toast.LENGTH_SHORT).show();
     }
 
     // проверка на регистрацию
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         cUser = mAuth.getCurrentUser();
         Bundle arguments = getIntent().getExtras();
-        if (arguments != null){
-            if (arguments.get("log_out").toString().equals("log_out")){
-                cUser=null;
+        if (arguments != null) {
+            if (arguments.get("log_out").toString().equals("log_out")) {
+                cUser = null;
+                SharedPreferences.Editor ed = sPref.edit();
+                ed.putString("EMAIL", "log_out");
+                ed.apply();
             }
         }
-        if(cUser!=null){
+        if ((cUser != null) && !(sPref.getString("EMAIL", "").equals("log_out"))) {
             String name = "Вы вошли в аккаунт как " + cUser.getEmail();
-            Toast.makeText(getApplicationContext(), name ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), name, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Reg_Auth.this, MainMenu.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        }
-        else{
+        } else {
             Toast.makeText(this, "Вы вышли", Toast.LENGTH_SHORT).show();
         }
     }
@@ -144,6 +147,9 @@ public class Reg_Auth extends AppCompatActivity {
                         e.printStackTrace();
                     }
             }
+        }
+        else {
+            Toast.makeText(getApplicationContext(),"Поля должны быть заполнены",Toast.LENGTH_SHORT).show();
         }
     }
     // кнопка для админа

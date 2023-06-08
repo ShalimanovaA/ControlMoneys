@@ -33,6 +33,9 @@ public class Family extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     SharedPreferences sPref; public String prefName = "",curName="UserData" ;
 
+    public Family() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +55,9 @@ public class Family extends AppCompatActivity {
         //получить список
         sPref = getSharedPreferences(prefName, MODE_PRIVATE);
         String s = sPref.getString("FAMILY","");
-        //s="";
+
         if(!s.equals("")){
-            String[] words = s.split(";");
-            for (String word : words) {
-                familyArray.add(word);
-            }
+                familyArray = getArrayFromString(s);
         }
 
         // Создаём адаптер ArrayAdapter, чтобы привязать массив к ListView
@@ -111,6 +111,14 @@ public class Family extends AppCompatActivity {
                 }
                 break;
         }
+    }
+    public ArrayList<String> getArrayFromString(String s) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        String[] words = s.split(";");
+        for (String word : words) {
+            arrayList.add(word);
+        }
+        return arrayList;
     }
 
 }

@@ -54,7 +54,7 @@ public class Calender extends AppCompatActivity implements View.OnClickListener{
             year = Integer.parseInt(parts[0]);
             month = Integer.parseInt(parts[1]);
             day = Integer.parseInt(parts[2]);
-            CurData = Integer.toString(day)+"-"+ Integer.toString(month)+"-"+Integer.toString(year);
+            CurData = parts[2] +"-"+ parts[1]+"-"+parts[0];
             // Месяц начиная с нуля. Для отображения добавляем 1.
             datePicker.init(year, month - 1, day, new DatePicker.OnDateChangedListener() {
                 @Override
@@ -185,7 +185,7 @@ public class Calender extends AppCompatActivity implements View.OnClickListener{
                     sPref = getSharedPreferences(prefName, MODE_PRIVATE);
                     // объект editot
                     SharedPreferences.Editor ed = sPref.edit();
-                    int n = sPref.getInt("ACCT",0)+sum_day;
+                    int n = sPref.getInt("ACCT",0)-sum_day;
                     ed.putInt("ACCT", n);
                     ed.apply();
                     database.delete(DBHelper.TABLE_CONTACTS, DBHelper.KEY_DATA + " = ?",new String[]{CurData});

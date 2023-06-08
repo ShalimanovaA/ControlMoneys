@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.ktx.Firebase;
 
 import java.util.HashMap;
 
@@ -60,8 +61,6 @@ public class Form extends AppCompatActivity {
 
     }
 
-
-
     private void getDataFromDb() {
         ValueEventListener vListener = new ValueEventListener() {
             @Override
@@ -79,7 +78,7 @@ public class Form extends AppCompatActivity {
                             ed.apply();
                             isInDb = true;
                             ID = ds.getKey();
-                            String text = user.email +" "+ user.money + " руб. " + user.period + "/мес.";
+                            String text = concatStr(user);
                             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
                             // спросить про перезапись
                             quest.setVisibility(View.VISIBLE);
@@ -150,12 +149,12 @@ public class Form extends AppCompatActivity {
     public void yes(View view){
         HashMap map = new HashMap();
         // проверка на заполненность
-        if (user_period!=0 && money_user.getText().toString() != null) {
+        if (user_period!=0 && !money_user.getText().toString().equals("")) {
             // запись в бд
-//            SharedPreferences.Editor ed = sPref.edit();
-//            ed.putInt("PLAN", user_period);
-//            ed.putInt("ZP", Integer.parseInt(money_user.getText().toString()));
-//            ed.apply();
+            SharedPreferences.Editor ed = sPref.edit();
+            ed.putInt("PLAN", user_period);
+            ed.putInt("ZP", Integer.parseInt(money_user.getText().toString()));
+            ed.apply();
             map.put("money", Integer.parseInt(money_user.getText().toString()));
             map.put("period", user_period);
             try{
@@ -180,5 +179,8 @@ public class Form extends AppCompatActivity {
         Intent intent = new Intent(Form.this, MainMenu.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+    public String concatStr(UserAccount user){
+        return user.email +" "+ user.money + " руб. " + user.period + "/мес.";
     }
 }
