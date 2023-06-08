@@ -22,13 +22,11 @@ import com.google.firebase.ktx.Firebase;
 import java.util.HashMap;
 
 public class Form extends AppCompatActivity {
-    private String USER_KEY = "User";
     public String EMAIL, ID;
     public int user_period=1;
     public boolean isInDb = false;
     public EditText money_user;
     TextView quest,y,n;
-    private DatabaseReference mDataBase;
     SharedPreferences sPref; public String prefName = "", curName="UserData";
 
 
@@ -39,7 +37,7 @@ public class Form extends AppCompatActivity {
 
         sPref = getSharedPreferences(curName, MODE_PRIVATE);
         prefName = sPref.getString("EMAIL","");
-
+        sPref = getSharedPreferences(prefName, MODE_PRIVATE);
         // анкета при регистрации
         setContentView(R.layout.form);
         //скрыть элемента
@@ -49,10 +47,8 @@ public class Form extends AppCompatActivity {
         y.setVisibility(View.GONE);
         n = findViewById(R.id.textView10);
         n.setVisibility(View.GONE);
-        // получение почты
 
-        mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
-        getDataFromDb();
+        getData();
 
         money_user = findViewById(R.id.editTextNumberDecimal);
 
@@ -61,42 +57,18 @@ public class Form extends AppCompatActivity {
 
     }
 
-    private void getDataFromDb() {
-        ValueEventListener vListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+    private void getData() {
+        if(sPref.getInt("ZP",0) != 0) {
+            Toast.makeText(getApplicationContext(), "У вас есть сохраненные данные", Toast.LENGTH_SHORT).show();
+            isInDb = true;
+            Toast.makeText(getApplicationContext(), concatStr(), Toast.LENGTH_LONG).show();
+            // спросить про перезапись
+            quest.setVisibility(View.VISIBLE);
+            y.setVisibility(View.VISIBLE);
+            n.setVisibility(View.VISIBLE);
+        }
+}
 
-                // достаем из snapshot все данные
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    UserAccount user = ds.getValue(UserAccount.class);
-                    if (user != null){
-                        if (user.email.equals(EMAIL)) {
-                            Toast.makeText(getApplicationContext(), "У вас есть сохраненные данные", Toast.LENGTH_SHORT).show();
-                            SharedPreferences.Editor ed = sPref.edit();
-                            ed.putInt("PLAN", user.period);
-                            ed.putInt("ZP", user.money);
-                            ed.apply();
-                            isInDb = true;
-                            ID = ds.getKey();
-                            String text = concatStr(user);
-                            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
-                            // спросить про перезапись
-                            quest.setVisibility(View.VISIBLE);
-                            y.setVisibility(View.VISIBLE);
-                            n.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getApplicationContext(), "Произошла ошибка", Toast.LENGTH_SHORT).show();
-            }
-        };
-        mDataBase.addValueEventListener(vListener);
-    }
     public void onRadioButtonClicked(View view) {
         // если переключатель отмечен
         boolean checked = ((RadioButton) view).isChecked();
@@ -121,10 +93,6 @@ public class Form extends AppCompatActivity {
         if (!isInDb){
             // проверка на заполненность
             if (user_period!=0 && !money_user.getText().toString().equals("")) {
-                // запись в бд
-                UserAccount new_user = new UserAccount(mDataBase.getKey(), EMAIL, user_period, Integer.parseInt(money_user.getText().toString()));
-                mDataBase.push().setValue(new_user);
-
                 //запись в SharedPreferences
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putInt("PLAN", user_period);
@@ -143,11 +111,9 @@ public class Form extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
-
     }
     // обновление данных
     public void yes(View view){
-        HashMap map = new HashMap();
         // проверка на заполненность
         if (user_period!=0 && !money_user.getText().toString().equals("")) {
             // запись в бд
@@ -155,32 +121,21 @@ public class Form extends AppCompatActivity {
             ed.putInt("PLAN", user_period);
             ed.putInt("ZP", Integer.parseInt(money_user.getText().toString()));
             ed.apply();
-            map.put("money", Integer.parseInt(money_user.getText().toString()));
-            map.put("period", user_period);
-            try{
-                if(mDataBase.child(ID)!=null){
-                    mDataBase.child(ID).updateChildren(map);
-                    Toast.makeText(getApplicationContext(), "Данные обновлены", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Данные не бновлены", Toast.LENGTH_SHORT).show();
-                }
-            }
-            catch (Exception e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(getApplicationContext(), "Данные обновлены", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Form.this, MainMenu.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
         else{
             Toast.makeText(getApplicationContext(), "Проверьте корректность заполнения", Toast.LENGTH_SHORT).show();
         }
-
     }
     public void no(View view){
         Intent intent = new Intent(Form.this, MainMenu.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
-    public String concatStr(UserAccount user){
-        return user.email +" "+ user.money + " руб. " + user.period + "/мес.";
+    public String concatStr(){
+        return sPref.getString("EMAIL","") +" "+ sPref.getInt("ZP",0) + " руб. " + sPref.getInt("PLAN",1) + "/мес.";
     }
 }

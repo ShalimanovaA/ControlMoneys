@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,7 +51,7 @@ public class Account extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.log_out:
-                Intent intent_out = new Intent(Account.this, Reg_Auth.class);
+                Intent intent_out = new Intent(Account.this, RegDb.class);
                 intent_out.putExtra("log_out", "log_out");
                 startActivity(intent_out);
                 return true;

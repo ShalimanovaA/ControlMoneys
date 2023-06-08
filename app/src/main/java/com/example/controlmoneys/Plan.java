@@ -26,7 +26,6 @@ public class Plan extends AppCompatActivity {
     String text;
     SharedPreferences sPref; public String prefName = "",curName="UserData";
     SpendHelper spendHelper; DBHelper dbHelper;
-    private DatabaseReference mDataBase;private String USER_KEY = "User";
 
 
     @Override
@@ -38,9 +37,6 @@ public class Plan extends AppCompatActivity {
         sPref = getSharedPreferences(curName, MODE_PRIVATE);
         prefName = sPref.getString("EMAIL","");
         sPref = getSharedPreferences(prefName, MODE_PRIVATE);
-
-        mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
-        getDataFromDb();
 
 
         txt = findViewById(R.id.textView1);
@@ -55,36 +51,6 @@ public class Plan extends AppCompatActivity {
         }
         plan();
     }
-    // загрузить данные из бд
-
-    private void getDataFromDb() {
-        ValueEventListener vListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                // достаем из snapshot все данные
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    UserAccount user = ds.getValue(UserAccount.class);
-                    if (user != null){
-                        if (user.email.equals(sPref.getString("EMAIL",""))) {
-                            SharedPreferences.Editor ed = sPref.edit();
-                            ed.putInt("PLAN", user.period);
-                            ed.putInt("ZP", user.money);
-                            ed.apply();
-                        }
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getApplicationContext(), "Произошла ошибка", Toast.LENGTH_SHORT).show();
-            }
-        };
-        mDataBase.addValueEventListener(vListener);
-    }
-
     //составить план
     private void plan(){
 

@@ -33,9 +33,6 @@ public class Family extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     SharedPreferences sPref; public String prefName = "",curName="UserData" ;
 
-    public Family() {
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

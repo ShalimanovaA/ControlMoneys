@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
     public void onClickStart(View view){
-        Intent intent = new Intent(MainActivity.this, Reg_Auth.class);
+        Intent intent = new Intent(MainActivity.this, RegDb.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

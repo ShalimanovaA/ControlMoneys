@@ -1,10 +1,13 @@
 package com.example.controlmoneys;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,35 +32,16 @@ public class ReadBd extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.users_from_bd);
         init();
-        getDataFromDb();
     }
     private void init(){
         listView = findViewById(R.id.list);
         data = new ArrayList<>();
+        data.add("admin@admin.ru");data.add("helpdesk@mail.ru");data.add("server@mail.ru");
+
+        // Создаём адаптер ArrayAdapter, чтобы привязать массив к ListView
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data);
+        // устанавливаем для списка адаптер
         listView.setAdapter(adapter);
-        mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
         setTitle("Техническая поддержка");
-    }
-    private void getDataFromDb(){
-        ValueEventListener vListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                // достаем из snapshot все данные
-                for (DataSnapshot ds : snapshot.getChildren()){
-                    User user = ds.getValue(User.class);
-                    assert user != null;
-                    data.add(user.email);
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        mDataBase.addValueEventListener(vListener);
     }
 }

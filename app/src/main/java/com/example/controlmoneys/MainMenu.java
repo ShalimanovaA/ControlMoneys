@@ -62,7 +62,7 @@ public class MainMenu extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.log_out:
-                Intent intent_out = new Intent(MainMenu.this, Reg_Auth.class);
+                Intent intent_out = new Intent(MainMenu.this, RegDb.class);
                 intent_out.putExtra("log_out", "log_out");
                 intent_out.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent_out);
