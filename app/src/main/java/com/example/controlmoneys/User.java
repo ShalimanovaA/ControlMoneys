@@ -13,4 +13,13 @@ public class User {
         this.email = email;
         this.password = password;
     }
+    public String getUserEmail(){
+        return this.email;
+    }
+    public String getUserId(){
+        return this.id;
+    }
+    public String getUserPassword(){
+        return this.password;
+    }
 }
